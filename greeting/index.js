@@ -5,15 +5,8 @@ const port = process.env.PORT || 3000;
 const os = require('os');
 const hostname = os.hostname();
 
-var greetings = [
-  'Hey',
-  'Hi',
-  'Hello',
-  'Greetings'
-];
-
 app.get('*', function(req, res) {
-  res.send(greetings[Math.floor(Math.random() * greetings.length)] + ` (${hostname})`);
+  res.send('Guten Tag!' + ` (${hostname})`);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

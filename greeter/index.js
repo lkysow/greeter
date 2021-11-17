@@ -18,7 +18,23 @@ if (!NAME_URL) {
 }
 
 app.get('*', async function(req, res) {
-  res.send(`From ${hostname}: ` + await request(GREETING_URL) + ' ' + await request(NAME_URL));
+  var greetingOpts = {
+    timeout: 2000,
+    uri: GREETING_URL
+  }
+  var nameOpts = {
+    timeout: 2000,
+    uri: NAME_URL
+  }
+  request(greetingOpts).then(function(greetingResponse) {
+    request(nameOpts).then(function(nameResponse) {
+      res.send(`From ${hostname}: ${greetingResponse} ${nameResponse}`);
+    }).catch(function(err){
+      res.send(`From ${hostname}: error making request to name service: ${err}`)
+    })
+  }).catch(function(err){
+    res.send(`From ${hostname}: error making request to greeting service: ${err}`)
+  })
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
